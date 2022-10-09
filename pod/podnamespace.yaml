@@ -6,7 +6,7 @@ metadata:
 apiVersion: v1
 kind: Pod
 metadata:
-  namespace: development
+  namespace: development # bu degeri girmez isek default namespace de podlar olusturulur
   name: namespacepod
 spec:
   containers:
@@ -14,3 +14,17 @@ spec:
     image: nginx:latest
     ports:
     - containerPort: 80
+
+# kubectl get namespaces
+# kubectl get pods -A
+# kubectl get pods --all-namespaces
+# kubectl apply -f podnamespaces.yaml
+# kubectl get pods -n development
+# kubectl exec -it namespacepod -n development  -- /bin/sh      ==> pod default namespacede degil, bu sebeple baglanmak istersek bulundugu namespaceyi gostermemiz gerekmektedir
+
+
+# kubectl config set-context --current --namespace=development ==> kubeconfig dosyasindaki default namespaceyi imperative yolu ile degistirebiliriz.
+  # kubectl get pod
+
+# kubectl delete namepsaces development   ==> silerken dikkat etmek lazim cunku icerisindeki verileride onay almadan direk silmektedir.
+

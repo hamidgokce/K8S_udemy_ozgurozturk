@@ -13,3 +13,10 @@ spec:
     image: nginx
     ports:
     - containerPort: 80
+
+
+# kubectl apply -f podannotation.yaml
+# kubectl apply -f podannotation.yaml
+
+# kubectl annotate pods annotationpod foo=bar       ==> Annotationlar da labellar gibi imperative olarak eklenebiliyor
+# kubectl annotate pods annotationpod foo-          ==> Annotationlar da labellar gibi imperative olarak silinebiliyor

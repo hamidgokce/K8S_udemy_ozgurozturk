@@ -11,3 +11,17 @@ spec:
   - name: initcontainer
     image: busybox
     command: ['sh', '-c', "until nslookup myservice; do echo waiting for myservice; sleep 2; done"]
+
+# multicontainer in yapisi ile arada farkliliklar mevcut
+# command ==> shell calistir, nslookup ile myservice ye bak, cevap donmez ise waiting for myservice yazdir ve 2 sn bekle 
+# until ==> myservice calisir duruma gelene kadar devam edecek
+# boylelikle init container in isi bitmis olacak
+
+# kubectl apply -f podinitcontainer.yaml 
+# kubectl get pod
+# watch -n 2 kubectl describe pod initcontainerpod
+
+# kubectl logs -f initcontainerpod -c initcontainer
+
+# service1.yaml file la gecelim
+# kubectl apply -f service1.yaml

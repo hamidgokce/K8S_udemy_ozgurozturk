@@ -1,5 +1,7 @@
 # Deployment
 **deployment** konusuyla ilgili dosyalara buradan erişebilirsiniz.
+
+Biz deployment'da istenen durumu tanimlariz ve deployment controller mevcut durumu istenilen durumla karsilastirip gerekli aksiyonlari alir
 ***
 Imperative yöntemle Deployment oluşturma.
 

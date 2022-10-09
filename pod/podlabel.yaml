@@ -147,5 +147,64 @@ spec:
     image: nginx:latest
     ports:
     - containerPort: 80
-  nodeSelector:
+  nodeSelector:  # nodeselector node objesi ile pod objesini eslestirme imkani bulmaktayiz.  
+  # bu podu deploy ederken hddtype:ssd olan node u bul ve pod u orada calistir
+  # diyelim 20 worker var, bazilarina hizli ssd ler takili ve bazi uygulamalarimizin  hizli ssdler olan nodelarda calistirmak istiyoruz
     hddtype: ssd
+
+# anahtar deger degerleri
+# objelere aidiyet atama islemleri
+# hangi ekibin hangi objeye ait oldugu bilgisi ve listeleme imkani
+
+# objeler arasi baglanti saglama imkani
+
+# labellama metadata altinda yapilmaktadir
+# ayni anahtar kelimeyi iki defa ekleyemeyiz
+
+# kubectl apply -f podlabel.yaml
+# kubectl get pods
+# kubectl get pods -l "app" --show-labels ==> -l labellara gore arama yap, show-labels ile de labelleri de gormekteyiz
+# kubectl get pods -l "app=firstapp" --show-labels ==> app anahtarina firstapp degeri atanmis podlari listeliyor
+# kubectl get pods -l "app=firstapp, tier=frontend" --show-labels ==> iki kriteri karsilayan podlar
+# kubectl get pods -l "app=firstapp, tier!=frontend" --show-labels ==> app firstapp atanmis fakat tier frontend haricindekileri getir
+# kubectl get pods -l "app, tier=frontend" --show-labels ==> app anahtari olsun degeri onemli degil tier i frontend olanlari getir
+
+# kubectl get pods -l "app in (firstapp)" --show-labels ==> farkli bir syntax
+# kubectl get pods -l "app notin (firstapp)" --show-labels 
+# kubectl get pods -l "app, app notin (firstapp)" --show-labels 
+# ubectl get pods -l '!app' --show-labels
+
+# kubectl get pods -l "app in (firstapp, secondapp)" --show-labels  ==> equalitybase example  / esitlik temelli calisir
+# kubectl get pods -l "app=firstapp, app=secondapp" --show-labels   ==> setbase example       / atanmis atanmamis sorgusu yapar
+
+# kubectl get pods -l "app in (firstapp), tier notin(frontend)" --show-labels ==> app firstapp atanmis ve tier frontentharici atanmis
+
+# kubectl get pods --show-labels
+# kubectl label pods pod9 app=thirdapp            ==> yeni label ekleme
+# kubectl label pods pod9 app-                    ==> eklenilen labeli silme
+# kubectl label --overwrite pods pod9 team=team2  ==> label guncelleme
+# kubectl label pods --all foo=bar                ==> tum podlara label atama
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod11
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+  nodeSelector:  # nodeselector node objesi ile pod objesini eslestirme imkani bulmaktayiz.  
+  # bu podu deploy ederken hddtype:ssd olan node u bul ve pod u orada calistir
+  # diyelim 20 worker var, bazilarina hizli ssd ler takili ve bazi uygulamalarimizin  hizli ssdler olan nodelarda calistirmak istiyoruz
+    hddtype: ssd
+
+# kubectl get pods --show-labels              ==> daha onceki apply isleminde bu podun calistirilmadigini gorecegiz cunku hddtype: ssd atamasi yok
+# kubectl get nodes --show-labels 
+# kubectl get pods -w
+# kubectl label nodes minikube hddtype=ssd    ==> komutu ile pod11 in olusturabiliriz. watch ile de izleyebiliriz
+
+# kubectl delete -f podlabel.yaml 

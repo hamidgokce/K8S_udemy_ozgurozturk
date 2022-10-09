@@ -7,3 +7,6 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 9376
+
+# bize myservice isimli dns kaydi olusturacak
+# kubectl apply -f service1.yaml
