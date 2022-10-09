@@ -5,11 +5,13 @@ Imperative yöntemle pod oluşturma.
 
 ```
 $ kubectl run "pod_ismi" --image="image_ismi" --restart=Never
+$ kubectl get pods
+$ kubectl get pods -o wide 
 
-Ör: kubectl run firstpod --image=nginx --restart=Never
+Ör: kubectl run firstpod --image=nginx --restart=Never # container kapanirsa tekrar calismamasi icin
 ```
 ***
-Bir objenin ayrıntılı özelliklerini görmek. 
+Bir objenin ayrıntılı özelliklerini görmek. Troubleshoot icin onem arzediyor
 ```
 $ kubectl describe "obje_tipi" "obje_ismi"
 

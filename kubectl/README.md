@@ -49,9 +49,9 @@ $ kubectl get "obje_tipi" "obje_ismi"
 
 Varsayılan dışında başka bir namespace'de bulunan objeleri listeleme (_-n "namespace_adi" ekiyle komutların belirtilen namespace üstünde çalıştırılması sağlanmaktadır_)
 ```
-$ kubectl get "obje_tipi" -n "namespace_adi"
+$ kubectl get "obje_tipi" -n "namespace_adi" 
 
-Ör: kubectl get pods -n kube-system
+Ör: kubectl get pods -n kube-system # specific namespace
 ```
 ***
 Tüm namespace'lerde bulunan objeleri listeleme (_--all-namespaces ya da kısaca -A eki komutun tüm namespace'leri kapsamasını sağlar_)
@@ -59,6 +59,7 @@ Tüm namespace'lerde bulunan objeleri listeleme (_--all-namespaces ya da kısaca
 $ kubectl get "obje_ismi" --all-namespaces
 
 Ör: kubectl get pods --all-namespaces
+    kubectl get pods -A 
 ```
 ***
 kubectl komutlarının geri döndürdüğü çıktı kısıtlı bilgiler içerir ve plain-text olarak döner. **-o** opsiyonuyla bu çıktı belirtilen başka bir formatta döndürülebilir. Örneğin **-o yaml** opsiyonu çıktının yaml formatında döndürülmesini sağlar. Kullanılabilecek opsiyonlar:
@@ -81,3 +82,14 @@ $ kubectl explain "obje_tipi"
 Ör: kubectl explain pods
 ```
 ***
+Kubernetes jq'yu windows uzerinde kullanmak.
+```
+$ choco install jq
+$ kubectl get pods -n kube-system -o json | jq -r ".items[].spec.containers[].name"
+
+or ubuntu
+$ sudo apt install -y jq
+$ jq --version
+$ man jq
+```
+

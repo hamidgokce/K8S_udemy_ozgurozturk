@@ -1,4 +1,15 @@
-apiVersion:
-kind:
-metadata:
-spec:
+apiVersion:   # zorunlu / kubernetes api sinde nerede tanimlandigi 
+              # kubectl explain pods, deployment, serviceaccount
+kind:         # zorunlu / olusturulmak istenen obje tipi
+
+metadata:     # zorunlu
+              # obje ile ilgili uniq bilgiler
+  name: firstpod
+  labels: 
+    app: frontend
+spec:         # her obje tipine gore degisir
+  containers:
+    - name: nginx
+      image: nginx:latest
+      ports: 
+        - containerPort: 80
