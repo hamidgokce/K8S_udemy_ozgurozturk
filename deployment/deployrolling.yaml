@@ -9,11 +9,11 @@ spec:
   selector:
     matchLabels:
       app: rolling
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 2
-      maxSurge: 2
+  strategy: # rollout/rollback islemlerindeki uygulanacak strateji
+    type: RollingUpdate # varsayilandir. recreate nin tam tersidir. asamali olarak yap
+    rollingUpdate: # default olarak asagidaki degerler %25 dir
+      maxUnavailable: 2 # en fazla burada belirtilen kadar sil  / yuzde de girilebilir
+      maxSurge: 2 # sistemde en fazla olacak pod / yani en fazla 12 kadar olabilir
   template:
     metadata:
       labels:
@@ -24,3 +24,28 @@ spec:
         image: nginx
         ports:
         - containerPort: 80
+
+# kubectl apply -f deployrolling.yaml --record
+# kubectl get pods
+
+# kubectl edit deployment rolldeployment --record     ==> nginx httpd ile degistirelim. 
+  # bu islem ile replicaset olusur. 
+
+# kubectl set image deployment rolldeployment nginx=httpd:alpine --record=True
+  # record flagi bizim ne zaman neyi degistirdigimizi bilmemize yariyor
+  # kubectl rollout history deployment rolldeployment
+    # kubectl rollout history deployment rolldeployment --revision=2 
+      # rollout ile sadece bir oncekine degil istenilen yere geri donulebilir.
+      # kubectl rollout undo deployment rolldeployment                      ==> bir oncekine geri doner
+      # kubectl rollout undo deployment rolldeployment --to-revision=1      ==> listedeki 2 numarali history e doner
+
+# kubectl delete -f deployrolling.yaml
+
+
+# kubectl apply -f deployrolling.yaml
+# kubectl rollout status deployment rolldeployment -w     ==> bazi durumlarda canli olarak deployment surecini izlemek isteriz
+
+# kubectl set image deployment rolldeployment nginx=httpd:alpine      ==> yeni versiyona gecis ile sikinti oldugunu gorduk. komutu geri alabiliriz ama erroru goremeyiz.
+
+# kubectl rollout pause deployment rolldeployment                     ==> yukaridaki gecisi durdurabiliyoruz
+# kubectl rollout resume deployment rolldeployment                     ==> yukaridaki gecisi devam ettirebiliyoruz

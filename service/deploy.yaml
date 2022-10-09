@@ -41,3 +41,24 @@ spec:
         image: ozgurozturknet/k8s:backend
         ports:
         - containerPort: 5000
+
+# frontend ve backend icin 3er tane replica olusturacagiz
+
+# kubectl apply -f deploy.yaml
+# kubectl get pods
+# kubectl get replicaset
+
+# backend podlari kapsayacak service olusturmak icin serviceClusterIP.yaml
+
+
+# service objelerini silelim ve imperative olusturalim
+  # kubectl delete service backend
+  # kubectl delete service frontend
+# kubectl expose deployment backend --type=ClusterIP --name=backend
+# kubectl expose deployment frontend --type=NodePort --name=backend
+
+# kubectl get endpoints     ==> olusturulan serviceler ile ilgili endpoint objesi yaratilmistir.
+  # watch kubectl describe endpoints frontend
+  # kubectl get pods -o wide
+  # pod silindiginde yeni olusacak podun ip adresi otomatik/dinamic olarak endpoints listesine gelecektir.
+  # kubectl scale deployment frontend --replicas=5

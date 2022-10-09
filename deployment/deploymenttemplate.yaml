@@ -1,12 +1,31 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1 # bulundugu api
+kind: Deployment # olusturulmak istenen obje turu
 metadata:
   name: firstdeployment
   labels:
     team: development
 spec:
-  replicas: 3
+  replicas: 3 # 3 adet template altinda belirttigim ozelliklerde pod olustur.
   selector:
     matchLabels:
       app: frontend
   template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+# kubectl create deployment firstdeployment --image=nginx:latest --replicas=2
+# kubectl get deployment 
+# kubectl get deployment -w
+# kubectl delete pods firstdeployment-..    ==> manual silince yeni bir podun tekrar olusturuldugunu gormekteyiz.
+# kubectl set image deployment/firstdeployment nginx=httpd    ==> eger mevcut deploymentta bir degisiklik yapmak istiyorsak
+# kubectl scale deployment firstdeployment --replicas=5       ==> pod sayisinda scale yapmak
+# kubectl delete deployment firstdeployment
+
+# kubectl apply -f deploymenttemplate.yaml 

@@ -3,10 +3,12 @@ kind: Service
 metadata:
   name: frontendlb
 spec:
-  type: LoadBalancer
+  type: LoadBalancer # cloudservice saglayicilar ile kullanilirsa sonuc verecek service
   selector:
     app: frontend
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
+
+

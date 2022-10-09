@@ -10,3 +10,15 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+
+# kubectl apply -f serviceNodePort.yaml 
+# kubectl get service
+    # NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+    # backend      ClusterIP   10.108.180.150   <none>        5000/TCP       11m
+    # frontend     NodePort    10.97.148.130    <none>        80:32429/TCP   19s  ==> buda clusterip tabanli bir service / cluster icerisinden 80 portuna gidilirse
+      # arkadaki podlarin 80 portuna service yonlendirilecek. Tum workerlarin dis bacaginda 32429 portunu dinliyor. biz herhangi bir worker node un bu portuna ulasirsak
+      # frontend podlarindan birine yonlendirilecek trafik
+    # kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP        51m
+
+# minikube service --url frontend
+  # curl http://127.0.0.1:50652

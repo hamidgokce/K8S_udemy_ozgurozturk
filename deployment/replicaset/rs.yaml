@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: ReplicaSet # deployment objesinden tek farki buradaki ismi
 metadata:
   name: firstrs
   labels:
@@ -16,4 +16,11 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx
+        image: nginx # httpd degisikli yapacak olursa replicaset degisikligi uygulamayacaktir. 
+
+# kubectl get replicaset    ==> tek replicaset
+# kubectl set image deployment/firstdeployment nginx=httpd
+# kubectl get replicaset    ==> deployment ile tekrar replicaset 
+# kubectl rollout undo deployment firstdeployment  ==> eski replicaset ayarlarina gecmektedir.
+# kubectl apply -f rs.yaml
+# kubectl delete rs firstrs

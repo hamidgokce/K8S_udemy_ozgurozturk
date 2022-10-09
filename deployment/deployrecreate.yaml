@@ -9,8 +9,9 @@ spec:
   selector:
     matchLabels:
       app: recreate
-  strategy:
-    type: Recreate
+  strategy: # rollout/rollback islemlerindeki uygulanacak strateji
+    type: Recreate # oncelikle tum podlari sil sonra yenilerini olustur. Hardcore migrationda uygulanir. iki surumun birbirini etkileyecegi dusunulerek
+    # once eski podlar tamamen silinir sonra yenileri olusturulur. 
   template:
     metadata:
       labels:
@@ -21,3 +22,6 @@ spec:
         image: nginx
         ports:
         - containerPort: 80
+
+# kubectl apply -f deployrecreate.yaml
+# kubectl set image deployment rcdeployment nginx=httpd     ==> eski podlar tamamen silinmeden yenileri olusturulmamaktadir. watch veya -w ile izleyebiliriz.

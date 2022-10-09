@@ -3,10 +3,28 @@ kind: Service
 metadata:
   name: backend
 spec:
-  type: ClusterIP
+  type: ClusterIP # 
   selector:
-    app: backend
+    app: backend # bu degerlere sahip olan podlari bul ve trafigi onlara yonlendir. Yani service hangi podlara hizmet edecegini selector ile seciyor
+    # deploy.yaml file da da olusurulacak backend podlarina ayni anahtar degerler atanmaktadir
   ports:
     - protocol: TCP
-      port: 5000
-      targetPort: 5000
+      port: 5000 # sevicenin dinleyecegi pod
+      targetPort: 5000 # podlarin expose edilecegi pod
+
+# kubectl apply -f serviceClusterIP.yaml 
+# kubectl get service
+      # NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+      # backend      ClusterIP   10.108.180.150   <none>        5000/TCP   17s ==> cluster icerisinde herhangi bir kaynak bu ip adresinin 5000 portuna istek gonderdiginde
+      # kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP    39m ==> bu istek bu servicenin selector ile sectigi podlardan bir tanesinin ip adresine ayni port uzerinden yonlendirilecek
+
+# kubectl get pods
+  # kubectl exec -it frontend-... --bash    ==> frontend podlarindan herhangi birine baglanalim. backismini bu pod cozecek mi? 
+    # nslookup backend ==> isim cozumleme devrede. Kubernetes icerisinde coredns tabanli dns hizmeti bulunur. Tum podlar sorgulari buraya gonderir. 
+        # backend.default.svc.cluster.local
+        # isim.namespace_ismi.svc.cluster_domain
+    # ayni namespace icerisinde calisan podlar serviceleri kisa isimleri ile cozebilirler.
+    # baska bir namespacedeki pod backendi sorgulasaydi cevap alamayacakti. onun yerine tam ismini yazmasi gerekecekti. 
+    # curl backend:5000   ==>herseferinde olmasa da istekler farkli podlara dagitiliyor. loadbalancing islemi gerceklestiriliyor.
+
+# nodeport yaml file
