@@ -7,4 +7,7 @@ spec:
   containers:
   - name: failcontainer
     image: ubuntu:latest
-    command: ['sh', '-c', 'abc']
+    command: ['sh', '-c', 'abc'] # container icerisinde abc komutu calistiracagiz. komut bize hata verecek 
+
+# kubectl get pods -w 
+# kubectl apply -f pod/podlife3.yaml

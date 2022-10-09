@@ -10,14 +10,29 @@ spec:
       - containerPort: 80
     volumeMounts:
     - name: sharedvolume
-      mountPath: /usr/share/nginx/html
+      mountPath: /usr/share/nginx/html # olusturalacak volumeyi share ettigimiz path
   - name: sidecarcontainer
     image: busybox
     command: ["/bin/sh"]
     args: ["-c", "while true; do wget -O /var/log/index.html https://raw.githubusercontent.com/ozgurozturknet/hello-world/master/index.html; sleep 15; done"]
+    # her 15 sn bir githubdan index.html dosyamizi cekelecek  ilgili patha kaydedecek 
     volumeMounts:
     - name: sharedvolume
       mountPath: /var/log
   volumes:
   - name: sharedvolume
-    emptyDir: {}
+    emptyDir: {} # olusturulacak iki containerin kullanacagi ortak alan
+
+# kubectl get pods -w 
+# kubectl apply -f pod/podmulticontainer.yaml
+# kubectl exec -it multicontainer -c webcontainer -- /bin/sh
+  # hostname
+  # apt update
+  # apt install net-tools ==> ifconfig olmamasi sebebiyle yukleme yapiyoruz
+# kubectl exec -it multicontainer -c sidecarcontainer -- /bin/sh
+
+# ayni pod icerisinde olusturulan containerlarda network izolasyonu olmaz. birbirlerinin processlerini local host uzerinden erisebilirler.
+# network bakimindan ayni makinada calisiyor gibiler.
+
+# kubectl port-forward pod/multicontainer 8080:80 ==> kubectli calistirdigim makinanin 808 ine gelen istekleri containerin 80 ine gonder
+  # githubdaki index.html dosyasini guncelledigimizde degisiklikligin gerceklestigini gorebiliriz. 

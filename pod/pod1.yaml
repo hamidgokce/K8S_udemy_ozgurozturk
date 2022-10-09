@@ -4,9 +4,17 @@ metadata:
   name: firstpod
   labels: # atayacagimiz etiketler
     app: frontend 
+    # team: developer
 spec:
   containers:
   - name: nginx
     image: nginx:latest
     ports:
     - containerPort: 80
+
+# kubectl apply -f pods.yaml
+# kubectl describe pods firstpod
+# kubectl run secondpod --image=nginx --port=80 --labels="app=front-end,team=developer" --restart=Never 
+  # olusturduktan sonra tekrar label ekleyemeyiz
+# kubectl edit pods firstpod 
+  # Degisiklik sonrasi otomatik uygulanir fakat yaml dosyasinda degisiklik olmaz // cok sik kullanilmaz

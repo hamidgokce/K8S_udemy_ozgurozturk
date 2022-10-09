@@ -5,4 +5,7 @@ metadata:
 spec:
   containers:
   - name: imageerrorcontainer
-    image: enignx
+    image: enignx # image ismi yanlis yazilmis
+
+# kubectl get pods -w 
+# kubectl apply -f pod/podlife1.yaml

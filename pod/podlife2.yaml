@@ -3,8 +3,11 @@ kind: Pod
 metadata:
   name: succeededpod
 spec:
-  restartPolicy: Never
+  restartPolicy: Never # container kapandigi zaman kubelet bir daha olusturmayacak
   containers:
   - name: succeedcontainer
     image: ubuntu:latest
-    command: ['sh', '-c', 'echo "Hello, Kubernetes!" && sleep 20']
+    command: ['sh', '-c', 'echo "Hello, Kubernetes!" && sleep 20'] # shell calistirip echo ile yazi aliyoruz sonra da 20 sn bekleniyor daha sonra container kapaniyor
+
+# kubectl get pods -w 
+# kubectl apply -f pod/podlife2.yaml
