@@ -7,39 +7,42 @@ metadata:
 spec:
   containers:
   - name: liveness
-    image: k8s.gcr.io/liveness
+# hangi endpointe istek gonderecegiz? Healthz hercontainer da olan ozel bir endpoint mi? hayir buradaki uygulama tamamen bizim uygulamamiza ozel olarak kurgulanmali
+# uygulamanin boyle bir heathcheck endpointi varsa bunu deneyebiliriz yoksa localhosta gitmeliyiz /UYGULAMAYA OZEL KURGULAMALIYIZ
+    image: k8s.gcr.io/liveness #google container registry de bulunun image 
     args:
-    - /server
-    livenessProbe:
-      httpGet:
-        path: /healthz
-        port: 8080
+    - /server # container icerisinde web deamon calisacak / go dilinde yazilmis / websitemizi sunacak
+    livenessProbe: # bu anahtar ile tanimimizi baslatmaktayiz
+      httpGet: # kullanabilecegimiz 3 tur probe var / exec -- httpGet -- tcpsocket
+        path: /healthz # http servicesi ayakta olsa bile birseyler yanlissa http 400 donecek. kubenet de bunu anlayacak ve container i restart edecek
+        port: 8080 # local host healthz isimli endpointe 8080 uzerinden httpget request gonder / return code 200 ustu 400 alti cevap donerse isler yolunda
         httpHeaders:
-        - name: Custom-Header
+        - name: Custom-Header # httpheader a ozel header ekleyebiliriz
           value: Awesome
-      initialDelaySeconds: 3
-      periodSeconds: 3
+      initialDelaySeconds: 3 # pod sonrasi uygulama hemen ayaga kalkmayabilir. Onhazirlik yapmasi gerekebilir. container baslatilsin ve belirlenen sure kadar beklenilsin
+      periodSeconds: 3 # bu isin kac saniyede bir yapilmasi gerektigi / her 3 er saniyede bir sorgulama yapilacak
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   labels:
     test: liveness
-  name: liveness-exec
+  name: liveness-exec # webuygulamasi degilse console uygulamasi ise script secenegi kullanabiliriz.
 spec:
   containers:
   - name: liveness
-    image: k8s.gcr.io/busybox
+    image: k8s.gcr.io/busybox # busybox imagesinden olusan bir pod
     args:
-    - /bin/sh
+    - /bin/sh 
     - -c
     - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+    # process baslatildiginda tmp//healthy isimli dosya olusturuluyor / 30 saniye bekleniyor / sonra silip 5 dk bekliyoruz
     livenessProbe:
       exec:
         command:
-        - cat
+        - cat # cat komutu ile tmp/healthy altindaki dosyayi kontrol ediyoruz. dosyanin olup olmadigini kontrol ederek servicenin duzgun calisip calismadigini kontrol edebiliriz.
         - /tmp/healthy
-      initialDelaySeconds: 5
+      initialDelaySeconds: 5 # container baslatildiginda 5 saniye beklenecek sonra cat tmp/healthy komutu calistirilacak. dosya olursa olumlu donecek
       periodSeconds: 5
 ---
 apiVersion: v1
@@ -50,8 +53,9 @@ metadata:
     app: goproxy
 spec:
   containers:
-  - name: goproxy
-    image: k8s.gcr.io/goproxy:0.1
+  - name: goproxy # tcp socket probesi
+    image: k8s.gcr.io/goproxy:0.1 # bazen komut calistirma veya httpget istekleri bir seyin saglikli olup olmadigi hakkinda bilgi vermeyebilir. orn, mysql calistiriyoruz.
+    # bizler 3306 portuna istek gonderip cevap alirsak saglikli olarak degerlendirebiliriz.  
     ports:
     - containerPort: 8080
     livenessProbe:
@@ -61,3 +65,10 @@ spec:
       periodSeconds: 20
 
 # 3 pod tanimi var
+
+# kubectl apply -f liveness.yaml
+# kubectl get pods -w
+  # restart kismina dikkat edelim. 
+  # kubectl describe pod liveness-http
+    # belirli zamandan sonra crashloopbackoff a donmekte. "git buna bak ve control et demek"
+# kubectl delete -f liveness.yaml 
