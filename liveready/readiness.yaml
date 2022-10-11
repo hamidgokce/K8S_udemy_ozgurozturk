@@ -19,18 +19,19 @@ spec:
         image: ozgurozturknet/k8s:blue
         ports:
         - containerPort: 80
-        livenessProbe:
+        livenessProbe: # iki ayri probeyi gorebilmekteyiz. Genelde de kullanim bu sekilde olmaktadir.
           httpGet:
-            path: /healthcheck
+            path: /healthcheck # liveness ile health check isimli bir endpointe istek gonderiyoruz. cevap olumlu ise podun duzgun calistigini varsayiyoruz.
             port: 80
           initialDelaySeconds: 5
           periodSeconds: 5
-        readinessProbe:
+        readinessProbe: # iki ayri probeyi gorebilmekteyiz. Genelde de kullanim bu sekilde olmaktadir.
+        # readiness yazimlari liveness gibidir. sorgu sonucu olarak aksiyon almaktayiz.
           httpGet:
-            path: /ready
+            path: /ready # ready endpointe sorguluyor, olumlu cevap gelirse de, podun service den trafik almaya hazir oldugunu degerlendiriyoruz
             port: 80
-          initialDelaySeconds: 20
-          periodSeconds: 3
+          initialDelaySeconds: 20 # pod olustuktan sonra 20 sn beklenecek ve sonra sorgu yapilacak
+          periodSeconds: 3 # her 3 sn bir sorgulama devam edecek
 ---
 apiVersion: v1
 kind: Service
@@ -43,3 +44,16 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+
+
+# bu dosyada 3 podlu bir yml ve bir adet service olusturmaktayiz
+
+# kubectl get pod -w
+# kubectl describe endpoints frontend
+# kubectla apply -f readiness.yaml
+
+# faile simule edelim.
+  # kubectl exec ...  --rm -rf ready ==> podlardan birine baglanip dosya siliyoruz. 
+  # readiness probe faile edecek. (notreadyaddresses e bak describe komutu ile)
+
+  # kubectl exec ... touch ready    ==> silinen dosyayi tekrar olusturalim. 
