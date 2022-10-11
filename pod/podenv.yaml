@@ -10,8 +10,19 @@ spec:
     image: ozgurozturknet/env:latest
     ports:
     - containerPort: 80
-    env:
-      - name: USER
-        value: "Ozgur"
+    env: # env ler container altinda bu konumda tanimlanmaktadir.
+      - name: USER # user env ismi
+        value: "Hamid" # user env ismine atanmis deger
       - name: database
         value: "testdb.example.com"
+
+# env degerini hardcode olarak gommedik. Calistigi ortamdaki user isimli env degeri ne ise ona bak ve o degeri ata
+
+# kubectl apply -f podenv.yaml
+# kubectl get pod
+  # kubectl exec envpod -- printenv
+
+  # bu bir webservice uygulama podu. dis dunyadan ulasabilmek icin loadbalancer yada nodeport tanimlamak gerekmektedir.
+  # kubernetes bize portforward imkani saglamaktadir. kendi pc mizden tunel acarak uygulamaya ulasabilmekteyiz.
+    # kubectl port-forward deployment/service/pod pod/envpod 8080:80 
+      # makinama gelen 8080 istekleri podun 80 ine gonder / shell in acik kalmasi gerekiyor
