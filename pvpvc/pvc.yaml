@@ -3,13 +3,18 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysqlclaim
 spec:
-  accessModes:
+  accessModes: # pv ile ayni
     - ReadWriteOnce
   volumeMode: Filesystem
   resources:
     requests:
       storage: 5Gi
   storageClassName: ""
-  selector:
-    matchLabels:
+  selector: 
+    matchLabels: # hangi pv yi talep ettigimizi bu kisimda belirtiyoruz
       app: mysql
+  
+# kubectl apply -f pvc.yaml 
+# kubectl get pvc     => status=Bound yani pv ye pvc baglanmis oldu anlaminda 
+
+# kodun altina nasil baglandigini gorebilmek icin deploy.yaml fileya gecelim

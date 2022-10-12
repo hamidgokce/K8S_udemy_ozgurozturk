@@ -42,3 +42,14 @@ spec:
         - name: mysqlvolume
           persistentVolumeClaim:
             claimName: mysqlclaim
+
+
+# kubectl get pods -o wide -w
+# kubect apply -f deploy.yaml
+
+
+# minikube node add
+# kubectl get nodes
+# kubectl taint node minikube a=b:NoExecute
+# kubectl describe pod ... 
+

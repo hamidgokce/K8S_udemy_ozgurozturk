@@ -2,14 +2,34 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
    name: mysqlpv
-   labels:
+   labels: # pvc pv yi bu labele gore sececek
      app: mysql
 spec:
   capacity:
-    storage: 5Gi
+    storage: 5Gi # talep ettigi alan
   accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
+    - ReadWriteOnce # tek bir poda baglanip hem okuma hem de yazma
+  persistentVolumeReclaimPolicy: Recycle # production ortaminda retain secilmesi uygun olacaktir
   nfs:
     path: /
     server: 10.255.255.10
+
+# Clusterdan baglanabilecegimiz bir depolama unitesi ustundeki paylasimlari yada diskleri kubernetes podlarina mount edebilmemize imkan saglayan bir ozellik
+# Bunu deneyimleyebilmemiz icin depolama unitesine ihtiyacimiz olacak.
+# Kendi PC mizde nfs server calistiracagiz, minikube kubernetes cluster da bu nfs serveri kullanacak
+
+# ==> DOCKER VOLUME YARATACAGIZ
+# docker volume create nfsvol
+
+# ==> DOCKER NETWORK OLUSTURACAGIZ
+# docker network create --driver=bridge --subnet=10.255.255.0/24 --ip-range=10.255.255.0/24 --gateway=10.255.255.10 nfsnet
+
+# ==> BU NETWORK VE VOLUMEYI KULLANAN NFS SUNUCU OLUSTURACAGIZ
+# docker run -dit --privileged --restart unless-stopped -e SHARED_DIRECTORY=/data -v nfsvol:/data --network nfsnet -p 2049:2049 --name nfssrv ozgurozturknet/nfs:latest
+
+# ==> Kendi makinamizin icerinde nfs server kurmus olduk
+# docker ps
+
+# kubectl apply -f pv.yaml 
+# kubectl get pv
+
