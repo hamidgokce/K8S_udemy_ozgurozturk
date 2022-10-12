@@ -7,13 +7,13 @@ spec:
   - name: nodeaffinity1
     image: ozgurozturknet/k8s
   affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
+    nodeAffinity: # node affinity icin iki secenegimiz var. Diger secenek 29. satirda
+      requiredDuringSchedulingIgnoredDuringExecution: # pod olusturulurken asagidaki tanimlamaya uygun node bul ve podu orada olustur. Uygun node bulunmazsa da podu olusturma
         nodeSelectorTerms:
         - matchExpressions:
           - key: app
-            operator: In #In, NotIn, Exists, DoesNotExist
-            values:
+            operator: In #In (blue olan yerde calistirilacak), NotIn( blue olmayan yerde /antiaffinity denir), Exists, DoesNotExist ## 
+            values: # kubernetes podu olusturuken app=blue seklinde label arayacak. Uygun worker node gorurse bu podu schedule edecek
             - blue
 ---
 apiVersion: v1
@@ -25,10 +25,10 @@ spec:
   - name: nodeaffinity2
     image: ozgurozturknet/k8s
   affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 1
-        preference:
+    nodeAffinity: # node affinity icin iki secenegimiz var. Diger secenek 10. satirda
+      preferredDuringSchedulingIgnoredDuringExecution: # yapmis oldugum tanim uzerinde podu olustur eger uygun tanim bulamiyorsan da pending de bekleme. Baska node bul ve orada calistir
+      - weight: 1 # 1-100 olabilir. birden fazla tanim girildiginde hangisinin daha once degerlendirilecegine bakiyor. 2>1 oldu icinde 2 oncelikte
+        preference: # app=blue ve red lere bakacak ve app=red weight buyuk oldugu icin de burada olusturacak. Eger 2 de yer yoksa 1 de orada da yoksa herhanbir yerde olusturacak
           matchExpressions:
           - key: app
             operator: In
@@ -55,5 +55,14 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
         - matchExpressions:
-          - key: app
+          - key: app # app diye bir anahtar olacak ama degeri ne olursa olsun
             operator: Exists #In, NotIn, Exists, DoesNotExist
+
+# IgnoredDuringExecution: Pod bir defa schdule edildikten sonra calismaya devam edecek.  
+
+# kubectl apply -f podnodeaffinity.yaml
+# kubectl get pods -w
+  # pod 2 olustu ama 1 ve 3 pending asamasinda
+# kubectl get node
+# kubectl label node minikube app=blue
+  # label ekleme ile birlikte 1 ve 3 running asamasina gecti

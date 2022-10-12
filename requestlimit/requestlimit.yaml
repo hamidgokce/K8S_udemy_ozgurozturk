@@ -7,11 +7,15 @@ metadata:
 spec:
   containers:
   - name: requestlimit
-    image: ozgurozturknet/stress
+    image: ozgurozturknet/stress # container calistirilinca 30 sn sonra stress teste tabi tutulacak.  512 mb ram talebinde bulunacak
     resources:
-      requests:
-        memory: "64M"
-        cpu: "250m"
+      requests: # kubernetes podu olusturmaya basladigi zaman scheduler node sececek.  
+        memory: "64M" # 64 m
+        cpu: "250m" # ve ceyrek cpu uzerinde schdule et demekteyiz. bu pod olusturulabilmesi icin minimum kaynak. eger istenilen deger yoksa pod olusturulamayacak
       limits:
-        memory: "256M"
-        cpu: "0.5"
+        memory: "256M" # en fazla kullanilabilecek kaynak fakat limit asimi gecince calisma eylemi devam eder. OOMKilled durumuna gecerek pod restart edilecek. 
+        # uygulama davranisana gore belirlememiz gerekmektedir.
+        cpu: "0.5" # bu limitin uzerine gecince calismayacak
+
+# kubectl apply -f requestlimit.yaml
+# kubectl describe pod requestlimit

@@ -21,16 +21,19 @@ spec:
       mountPath: /cache
     - name: file-vol
       mountPath: /cache/config.json       
-  volumes:
-  - name: directory-vol
+  volumes: # hostpath olarak olusturabilecegimiz 3 tur volume var
+  - name: directory-vol # container icerisinde var olan bir konumu volume olarak tanimliyoruz
     hostPath:
-      path: /tmp
+      path: /tmp # container icerisinde dirone klasorunden erisilebilecek
       type: Directory
   - name: dircreate-vol
     hostPath:
-      path: /cache
-      type: DirectoryOrCreate
-  - name: file-vol
+      path: /cache # container icerisinde cash isimli konuma bagliyoruz
+      type: DirectoryOrCreate # container icerisinde bu konum varsa kullan yoksa olustur.
+  - name: file-vol # ozel bir dosya olarak da mount edebilmekteyiz. varsa kullan yoksa yarat
     hostPath:
       path: /cache/config.json
       type: FileOrCreate
+
+# kubectl apply -f podvolumehostpath.yaml
+# kubectl exec -it hosthpath -- bash

@@ -8,7 +8,7 @@ spec:
   containers:
   - name: toleratedcontainer1
     image: ozgurozturknet/k8s
-  tolerations:
+  tolerations: # podun taint i tolere edebilmesi icin birebir ayni toleration tanimi yapilmasi gerekiyor. 
   - key: "platform"
     operator: "Equal"
     value: "production"
@@ -24,7 +24,30 @@ spec:
   containers:
   - name: toleratedcontainer2
     image: ozgurozturknet/k8s
-  tolerations:
+  tolerations: # platform ve noschedule olarak girilmis bir tanim var is tolere et yani degeri onemli degil
   - key: "platform"
     operator: "Exists"
     effect: "NoSchedule"
+
+# affinity tanimlari bir podun nerede schedule edilecegini tanimlar. Yani poda gore bir tanimdir. 
+# bizim ihtiyacimiz su su worker node larda sadece su tipte uygulama calissin ise bu islemi affinityler saglamaz
+
+# kubectl describe node minikube 
+  # henuz taint yok bu sebeple de her podu kabul edecek konumda
+  # kubectl taint node minikube platform=production:NoSchedule    
+    # EKLEME    kubectl taint node minikube platform=production:NoSchedule    
+    # SILME     kubectl taint node minikube platform- 
+  
+# kubectl run test --image=nginx --restart=Never
+  # olusturulan pod taint i tolere edemeyecegi icin pod olusmayacak cunku worker node bu podu kabul etmedi (kubect get pods -w)
+  # kubectl describe pod test
+
+
+# Pod surada olusturulsun                   ==> nodeaffinity
+# Worker node uzerinde su podlar calissin   ==> taint ve toleration
+
+
+# kubectl taint node minikube color=blue:NoExecute
+    # color=blue tolere edemeyen pod varsa schedule etme ve ayni zamanda calisan varsa ve tolere edemiyorsa bunlari da kaldir 
+
+  

@@ -3,14 +3,14 @@ kind: ConfigMap
 metadata:
   name: myconfigmap
 data:
-  db_server: "db.example.com"
+  db_server: "db.example.com" # girecegimiz degeleri bu sekilde veya
   database: "mydatabase"
-  site.settings: |
+  site.settings: | # site.settings yazarak girebiliriz. Icerisine daha fazla veri girebiliriz. 
     color=blue
     padding:25px
 ---
 apiVersion: v1
-kind: Pod
+kind: Pod # configmap in poda aktarma sekli ayni secret gibi
 metadata:
   name: configmappod
 spec:
@@ -36,3 +36,20 @@ spec:
     - name: config-vol
       configMap:
         name: myconfigmap
+
+# Gizli olmayan verileri anahtar/deger eslenikleri olarak depolamak icin kullanilan bir API nesnesidir.
+# Tutulmasi gereken sifre, ssh anahtari gibi gizli bir veri ise secret degilse configmap uygun olacak.
+# Her ikiside ETCD de encoded olarak tutulmadigi icin aynidir. 
+
+# Imperative
+  # kubectl create configmap myconfigmap--from-literal=background=blue --from-file=a.txt
+  # kubectl get configmap
+
+# Declarative
+  # kubectl apply -f configmap.yaml
+  # kubectl get pods
+  # kubectl exec -it configmappod -- bash
+    # printenv yazarsak gorebiliriz.
+    # ayrica config isimli klasore de atmistik
+      # cd config diyere gorebiliriz
+    #

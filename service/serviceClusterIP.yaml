@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: backend
 spec:
-  type: ClusterIP # 
+  type: ClusterIP # servicenin turunu tanimliyoruz
   selector:
     app: backend # bu degerlere sahip olan podlari bul ve trafigi onlara yonlendir. Yani service hangi podlara hizmet edecegini selector ile seciyor
     # deploy.yaml file da da olusurulacak backend podlarina ayni anahtar degerler atanmaktadir
   ports:
     - protocol: TCP
-      port: 5000 # sevicenin dinleyecegi pod
+      port: 5000 # servicenin dinleyecegi pod
       targetPort: 5000 # podlarin expose edilecegi pod
 
 # kubectl apply -f serviceClusterIP.yaml 

@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: emptydir
+  name: emptydir # Pod a bagli volume yani pod silindiginde volume de silinmektedir
+  # ephemeral volumeler pod icerisinde olusan butun containerlara ayni anda baglanabilir
 spec:
   containers:
-  - name: frontend
+  - name: frontend # 
     image: ozgurozturknet/k8s:blue
     ports:
     - containerPort: 80
@@ -15,15 +16,25 @@ spec:
       initialDelaySeconds: 5
       periodSeconds: 5
     volumeMounts:
-    - name: cache-vol
+    - name: cache-vol # olusturulan volumenin konum itibariyle nereye mount edilecegi
       mountPath: /cache
   - name: sidecar
     image: busybox
     command: ["/bin/sh"]
     args: ["-c", "sleep 3600"]
     volumeMounts:
-    - name: cache-vol
+    - name: cache-vol # olusturulan volumenin konum itibariyle nereye mount edilecegi
       mountPath: /tmp/log
-  volumes:
+  volumes: # ilk once volume olusturup daha sonra volumeleri containerlar altindaki ilgili yerlere mount ederiz
   - name: cache-vol
     emptyDir: {}
+
+# kubectl get pod -w
+# kubectl apply -f podvolumeemptydir.yaml
+# kubectl exec -it emptydir -c frontend -- bash
+# kubectl exec emptydir -c  frontend -- rm -rf healthcheck    ==> komut ile livenessprobe healthcheck i silmekteyiz. Fakat podun tekrar
+  # olusturuldugunu gorebiliriz. Container a tekrar baglaninca cache de dosyalarin oldugunu gorecegiz fakat mount etmedigimiz diger konumlarda daha once
+  # olusturdugumuz dosyalari goremeyecegiz.
+
+
+

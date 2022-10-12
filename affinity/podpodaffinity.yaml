@@ -18,15 +18,15 @@ metadata:
   name: cachepod
 spec:
   affinity:
-    podAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
+    podAffinity: # node affinity gibi hard-soft secenekleri mevcuttur
+      requiredDuringSchedulingIgnoredDuringExecution: # mecbur kilinmis
       - labelSelector:
           matchExpressions:
           - key: app
             operator: In
             values:
             - frontend
-        topologyKey: kubernetes.io/hostname
+        topologyKey: kubernetes.io/hostname # nodeaffinity den farki to pologyKey degeridir. Ayni hostname yani ayni worker uzerinde calistirilacak
       preferredDuringSchedulingIgnoredDuringExecution:
       - weight: 1
         podAffinityTerm:
@@ -37,17 +37,27 @@ spec:
               values:
               - blue
           topologyKey: kubernetes.io/hostname
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
+    podAntiAffinity: # nodeantiaffinity notin ile halledebiliyorduk. Podantiaffinity yi ozel olarak tanimlamak gerekiyor.
+      preferredDuringSchedulingIgnoredDuringExecution: # Nodeaffinity ile mantik ayni
       - weight: 100
         podAffinityTerm:
           labelSelector:
-            matchExpressions:
+            matchExpressions: # bu podu deployment=prod tanimi olan bir pod ile ayni yerde calistirma
             - key: deployment
               operator: In
               values:
               - prod
-          topologyKey: topology.kubernetes.io/zone
+          topologyKey: topology.kubernetes.io/zone # Ayni worker node da olmasina gerek olmayacakti
   containers:
   - name: cachecontainer
     image: redis:6-alpine
+
+
+# Bazi durumlarda bizler olusturacagimiz podun schedule edilecegi nodeun uzerinde baska podlarin olmasi/olmamasi durumana gore secilmesini isteyebiliriz.
+
+# Her kubernetes nodeunda 3 ayri label degeri olur.
+
+# NODEAFFINITY = Calisacagi worker nodedaki labelleri gore seciyoruz.
+# PODAFFINITY  = Hangi podlar ile birlikte calisacagini secmekteyiz.
+
+# Kucuk bir cluster varsa pod-node affinity kullanmak mantikli gelmeyecektir ama buyuk bir cluster ise yani cok fazla worker node varsa kullanmak gerekir
