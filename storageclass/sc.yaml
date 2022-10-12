@@ -9,3 +9,15 @@ parameters:
 provisioner: kubernetes.io/azure-disk
 reclaimPolicy: Delete
 volumeBindingMode: WaitForFirstConsumer
+
+
+# pvc olusturdugumuz anda depolama unitesi ile haberleserek gerekli ayarlari yaparak bir volume ve bir pv objesi olusturacak mekanizma gelistirdi
+# pv yi ve volume yi dinamik olarak olusturma imkani
+
+# Azure EKS uzerinde calisildi
+# kubectl config use-contect aks-k8s-test
+# kubectl get nodes
+# kubectl get storageclass
+
+# kubectl apply -f sc.yaml
+# kubectl get storageclasses

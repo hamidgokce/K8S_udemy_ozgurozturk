@@ -9,4 +9,12 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: "standarddisk"
+  storageClassName: "standarddisk" # selector ile hangi pv yi kullanmak istedigimizi belirtmiyoruz
+  # onun yerine kullanmak istedigimiz storageclass i belirtiyoruz
+
+# kubectl get pvc
+# kubectl get pv
+
+# kubectl apply -f pvc.yaml
+  # volumebindingmode ==> waitforfirstconsumer
+

@@ -42,3 +42,5 @@ spec:
         - name: mysqlvolume
           persistentVolumeClaim:
             claimName: mysqlclaim
+
+# kubectl apply -f deploy.yaml
