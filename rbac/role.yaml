@@ -3,7 +3,12 @@ kind: Role
 metadata:
   namespace: default
   name: pod-reader
-rules:
+rules: # tanimlarin yapildigi kisim
+# rules altinda bu role atanan yetkiler belirlenir
 - apiGroups: [""] # "" indicates the core API group
+# hangi api grubundaki objeler ile ilgili oldugunu belirttigimiz kisim / ornekteki gibi bos birakilirsa core api grouptaki objeler ile ilgili oldugu  
+# yani V1 api indaki objeler ile ilgili yetkilendirme yaptigimizi bildiririz 
   resources: ["pods"] # "services", "endpoints", "pods", "pods/log" etc.
+  # hangi kaynaklar ile ilgili olacak / core api indaki pod objesi ile ilgili bir kural yazdigimizi soyluyoruz
   verbs: ["get", "watch", "list"] # "get", "list", "watch", "post", "put", "create", "update", "patch", "delete"
+  # http request gibi / get, list, create, update, patch, delete

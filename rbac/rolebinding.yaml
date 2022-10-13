@@ -1,13 +1,18 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: RoleBinding # binding de kubernetes objesi ve role ile ayni API de
 metadata:
   name: read-pods
   namespace: default
-subjects:
+subjects: # role bindingin kime bind edilecegi belirleniyor  
 - kind: User
   name: ozgur@ozgurozturk.net # "name" is case sensitive
   apiGroup: rbac.authorization.k8s.io
-roleRef:
+roleRef: # neyi baglamak istedigimizi belirliyoruz
   kind: Role #this must be Role or ClusterRole
   name: pod-reader # this must match the name of the Role or ClusterRole you wish to bind to
   apiGroup: rbac.authorization.k8s.io
+
+# once role.yaml dosyasi deploy edilecek
+# ardindan bu dosya ile rolebinding objesi yaratilacak
+# bu sayede pod-reader isimli role ozgur isimli kullaniciya bind edilecek.
+
