@@ -5,7 +5,8 @@ metadata:
     app: cassandra
   name: cassandra
 spec:
-  clusterIP: None
+  clusterIP: None # su ana kadar olusturdugumuz service tanimlarina benziyor sadece bu kisim farkli 
+  # halihazirda ip yok fakat yeni olusturlan podlarin ip leri atanacak
   ports:
   - port: 9042
   selector:
@@ -23,7 +24,7 @@ spec:
   selector:
     matchLabels:
       app: cassandra
-  template:
+  template: # olusturulmasini istedigimiz pod tanimi
     metadata:
       labels:
         app: cassandra
@@ -88,7 +89,7 @@ spec:
         volumeMounts:
         - name: cassandra-data
           mountPath: /cassandra_data
-  volumeClaimTemplates:
+  volumeClaimTemplates: # her bir pod icin pvc olusturulmasini istiyoruz. pvc lerde standart isimli storageclassi kullanarak pv olusturacaklar. Her poda ayri pv
   - metadata:
       name: cassandra-data
     spec:
@@ -98,3 +99,33 @@ spec:
         requests:
           storage: 1Gi
 
+# Deploymenta benzeyen bir obje ama 3 temel fark mevcut
+  # olusturulan her pod pvc de belirlenen bir pv ye sahip olur yani her podun kendine ait pv si olur
+  # podlar sirayla olusturulur ve sirayla silinir
+  # Her poda statefulset adi ve 1,2,3 gibi isimler verilir
+
+
+# kubectl get pods -w
+# kubectl get pvc -w
+# kubectl apply -f statefulset.yaml
+
+# kubectl exec cassandra-0 -- nodetool status
+  # 3 instancesi bulunan cassandra cluster i ayaga kaldirildi
+
+# cluster i 5 poda cikaralim
+# kubectl scale statefulset cassandra --replicas=5
+  # iki pod ekleniyor ama sirayla
+# manual podu silelim
+  # kubectl delete pod cassandra-2
+    # terminate edildikten sonra ayni isimler tekrar olusturuldugunu gorebiliriz
+# kubectl scale statefulset cassandra --replicas=2
+  # oncelikle en son sonra bir oncesi siliniyor
+
+
+# kubectl get svc
+  # headless service
+# kubectl run -it test --image=busybox -- sh
+  # cassandra isimli serviceye gitmek istersek her seferinde ayri ip donuyor
+    # ping cassandra
+    # ping cassandra-1 
+      # load balancing imkani saglamaktadir

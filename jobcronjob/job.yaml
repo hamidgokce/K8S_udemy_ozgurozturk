@@ -3,14 +3,33 @@ kind: Job
 metadata:
   name: pi
 spec:
-  parallelism: 2
-  completions: 10
-  backoffLimit: 5
-  activeDeadlineSeconds: 100
+  parallelism: 2 # aksini belirtmezsek 1 degerini alir / 10 tane olusturulacak podlari kacar kacar olusturmak istedigimizi belirtiriz
+  completions: 10 # aksini belirtmezsek 1 degerini alir  / basarili kac tane pod olusturmak istedigimizi belirtiriz
+  backoffLimit: 5 # toplam kac defa hata olusarak jobu birakarak jobun fail etmesini istedigimiz sayi
+  activeDeadlineSeconds: 100 # fail sayisi yerine saniye veriyoruz
   template:
     spec:
-      containers:
+      containers: # pi sayisinin ilk iki rakamini cikaran uygulama
       - name: pi
         image: perl
         command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
       restartPolicy: Never #OnFailure 
+
+# daha once uyguladigimiz objelerin hepsi mudahale edip kapatilmadigi surece devam etmekteydi.
+# bazi is yukleri uzun sure calismasi gereken uygulamalar degil
+# calisip isini yapip kapanmasi gereken uygulamalar da var
+
+# bu islemler daha onceki objeler ile olusturulursa kapanip tekrar baslatilacak
+
+
+# iki senaryoda kullaniriz
+  # tek seferlik calisip yapmasi gerekeni yaparak kapanan uygulamalarimizi job ile deploy ederiz
+  # ornegin bir bucket da islenmesi gereken verilerimiz varsa bunlar islenene kadar calisacak uygulamalarimizi job seklinde deploy ederiz
+
+# kubectl get pods -w
+# kubectl get jobs -w
+# kubectl apply -f job.yaml 
+  # her seferinde 2 ser tane pod calisiyor ve sonra da kapaniyor ama podlar silinmiyor / bu sayede podlara gidip loglara bakiyoruz
+  # bir sure sonra silmek gerekiyor manual olarak
+# kubectl logs pod_name
+

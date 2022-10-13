@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: hello
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "*/1 * * * *" # herdakikada bir yeni job objesi olusturmasini istiyoruz
   jobTemplate:
     spec:
       template:
@@ -29,3 +29,11 @@ spec:
 # * * * * *
 #
 # https://crontab.guru/
+
+# * her / ise de tekrarlatan anlaminda 
+
+# linux deki crontab in k8s hali
+
+# kubectl get pods -w
+# kubectl apply -f cronjob-yaml
+# kubectl get cronjobs.batch
