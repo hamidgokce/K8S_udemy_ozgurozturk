@@ -23,3 +23,14 @@ spec:
                 name: greensvc
                 port:
                   number: 80
+
+# ingress kubernetes objesi
+# bu objenin spec kisminda kurallar belirleyerek serviceleri ingress uzerinden dis dunyaya acabiliyorum.
+# 9. satir ==> k8sfundamental.com adinda service yayimladigimizi soyluyoruz ve altinda iki path yayimliyoruz. /blue gelirse bluesvc den /green gelirse greensvc den cevap 
+# vermesini istiyoruz. (https://kubernetes.io/docs/concepts/services-networking/ingress/)
+
+# annotation : cluster a deploy ettigimiz ingress controler uzeinde herhangi bir ayar yapmak istersek annotationlar aracili ile yapiyoruz
+# service yi http degilde https olarak dis dunyaya acmak isteseydik annotationlar ile yapmaktayiz
+
+# kubectl apply -f .
+  # iki ingress olustu
