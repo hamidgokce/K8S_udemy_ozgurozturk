@@ -39,3 +39,4 @@ $ kubectl delete ingress "statefulset_ingress"
 ***
 
 
+Eğer amacınızın kendi ortamınızda bir kubernetes cluster kurup bunu da ingress ile dışarıya açmaksa https://metallb.org/ metallb çözümüne göz atın. 

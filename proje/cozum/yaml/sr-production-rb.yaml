@@ -11,3 +11,6 @@ roleRef:
   kind: ClusterRole
   name: edit
   apiGroup: rbac.authorization.k8s.io
+
+
+# seniour groubu production namespacesinde edit etme hakki rolu olsun

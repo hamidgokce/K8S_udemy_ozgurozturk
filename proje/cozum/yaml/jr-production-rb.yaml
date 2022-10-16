@@ -11,3 +11,6 @@ roleRef:
   kind: ClusterRole
   name: view
   apiGroup: rbac.authorization.k8s.io
+
+# juniourun production da ise sadece okuma hakkinin olmasini istiyorduk.
+# bunun icin juniour isimli grubun production namespacesinde view rolunu atamaktayiz

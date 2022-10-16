@@ -13,6 +13,10 @@ spec:
   resources:
     requests:
       storage: 5Gi
+
+# Test namespacesinde mysql-test-claim isimli persistentvolumeclaim olusturuyoruz
+# bununla bir pv olusturulacak ve biz pv yi mysql e baglayacagiz
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -29,6 +33,10 @@ spec:
   resources:
     requests:
       storage: 5Gi
+
+# Test namespacesinde wp-test-claim isimli persistentvolumeclaim olusturuyoruz
+# storage class tanimlamadik bu sebeple de default storage class i kullanacak
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -44,7 +52,7 @@ spec:
       tier: test
       app: mysql
   strategy:
-    type: Recreate
+    type: Recreate # herseferinde silsin tekrar olustursun
   template:
     metadata:
       labels:
@@ -58,7 +66,7 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-test-secret
+              name: mysql-test-secret # daha once olusturdugumuz secret objesinden almaktayiz
               key: MYSQL_ROOT_PASSWORD
         - name: MYSQL_USER
           valueFrom:
@@ -80,7 +88,7 @@ spec:
             memory: "1Gi"
             cpu: "250m"
         ports:
-          - containerPort: 3306
+          - containerPort: 3306 # mysql in calisacagi port
             name: mysql-test-port
         volumeMounts:
           - name: mysql-test-pv
@@ -116,7 +124,7 @@ spec:
         name: wp-test
         env:
         - name: WORDPRESS_DB_HOST
-          value: mysql-test-svc
+          value: mysql-test-svc # wordpress mysql e mysql service uzerinden baglanmaktadir
         - name: WORDPRESS_DB_USER
           valueFrom:
             secretKeyRef:
@@ -137,7 +145,7 @@ spec:
             memory: "1Gi"
             cpu: "250m"
         ports:
-        - containerPort: 80
+        - containerPort: 80 # web uygulamasi 80 portundan calismaktadir
           name: wp-test-port
         volumeMounts:
         - name: wp-test-pv
@@ -147,10 +155,10 @@ spec:
         persistentVolumeClaim:
           claimName: wp-test-claim
       affinity:
-        podAffinity:
+        podAffinity: # Her iki uygulama da ayni worker uzerinde schedule edilecek
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
-              matchExpressions:
+              matchExpressions: # app=mysql isimli label a sahip bir pod uzerinde deploy edilsin
               - key: app
                 operator: In
                 values:
@@ -158,7 +166,7 @@ spec:
             topologyKey: kubernetes.io/hostname
 ---
 apiVersion: v1
-kind: Service
+kind: Service # cluster icerisnden mysql e erisilebilmesi icin
 metadata:
   name: mysql-test-svc
   namespace: test
@@ -173,7 +181,7 @@ spec:
     targetPort: 3306
 ---
 apiVersion: v1
-kind: Service
+kind: Service # ingress ile daha sonra dis dunyaya expose edebilmemiz icin
 metadata:
   name: wp-test-svc
   namespace: test

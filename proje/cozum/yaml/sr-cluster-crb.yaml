@@ -10,3 +10,6 @@ roleRef:
   kind: ClusterRole
   name: view
   apiGroup: rbac.authorization.k8s.io
+
+# artik namespace ozelinde istemedigimiz icin cluster genelinde atama yapmaliyiz. 
+# seniour groubu cluster in genelinde edit etme hakki rolu olsun

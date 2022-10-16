@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v1 # oncelikle headless service olusturuyoruz. Bu service sayesinde butun podlara individual olarak ulasabiliyoruz
 kind: Service
 metadata:
   name: mongo-svc
@@ -30,7 +30,7 @@ spec:
         replicaset: MainRepSet
     spec:
       terminationGracePeriodSeconds: 10
-      nodeSelector:
+      nodeSelector: # production da da calistirmak istedigimiz icin
         tier: production
       tolerations:
       - key: "tier"

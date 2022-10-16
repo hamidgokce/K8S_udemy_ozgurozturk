@@ -11,3 +11,8 @@ roleRef:
   kind: ClusterRole
   name: edit
   apiGroup: rbac.authorization.k8s.io
+
+# group olarak juniour isimli gruba edit isimli cluster rolunu test isimli namespacede bind etmekteyiz.
+# daha once soylenildigi gibi cluster roller cluster seviyesinde yetki vermek icin kullanilir ama biz cluster rolleri de istersek NAMESPACE bazinda atayabiliriz
+# 4 role ==> admin / cluster admin / edit / view  
+# edit ==> yaratma, silme, okuma gibi genel haklar

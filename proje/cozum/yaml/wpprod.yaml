@@ -85,9 +85,11 @@ spec:
         volumeMounts:
           - name: mysql-prod-pv
             mountPath: /var/lib/mysql
-      nodeSelector:
+      nodeSelector: # production icin schedule edilecek nodelara bu labeli daha once eklemistik. olusturulacak podlar sadece bu labele sahip yerde schedule edilecek
         tier: production
-      tolerations:
+      tolerations: # taint oldugu icin de tolere etmek gerekmektedir.
+      # toleration olmasaydi nodeselector olarak secmemize ragmen orada bunlar schdule edilemeyecekti. Cunku taintler var ve tolere etmemiz gerekiyor
+      # daha once 3 worker node a production olarak taint eklemistik. Production worker nodelarin burada schedule edilebilmesi icin toleration eklemeliyiz.
       - key: "tier"
         operator: "Equal"
         value: "production"

@@ -4,17 +4,17 @@ metadata:
   name: k8s-deployment
   labels:
     app: k8s
-  namespace: production
+  namespace: production # production namespacesinde olusturmak istiyoruz
 spec:
-  replicas: 5
+  replicas: 5 
   selector:
     matchLabels:
       app: k8s
   strategy:
-    type: RollingUpdate
+    type: RollingUpdate # recreate secseydik hepsi silinip yeniden olusturulacakti.
     rollingUpdate:
       maxUnavailable: 0
-      maxSurge: 2
+      maxSurge: 2 # ayni anda 2 tane denildigi icin
   template:
     metadata:
       labels:
@@ -39,7 +39,7 @@ spec:
           periodSeconds: 3
       nodeSelector:
         tier: production
-      tolerations:
+      tolerations: # nodelar uzerinde taint oldugu icin tolere etmesi icin toleration kismi eklendi
       - key: "tier"
         operator: "Equal"
         value: "production"
