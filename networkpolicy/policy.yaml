@@ -1,34 +1,38 @@
 apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+kind: NetworkPolicy # API objesi
 metadata:
   name: networkpolicy-example
-  namespace: ns-a
+  namespace: ns-a # Hangi namespace de deploy etmek istedigimiz 
 spec:
-  podSelector:
+  podSelector: # ilk once nir network policy olusturulur daha sonra bu network policy in hangi podlar uzerinde etkili olacagini pod selector ile seceriz
     matchLabels:
-      team: a
+      team: a # network policy i ns-a namespacesinde bulunan team=a labeline sahip butun podlara atamak istiyorum
   policyTypes:
-  - Ingress
-  - Egress
+  - Ingress # iceriye dogru yani sectigimiz podlara dogru gelen trafik ile ilgili
+  - Egress # dis dunyaya gidecek trafik ile ilgili  
   ingress:
-  - from:
-    - ipBlock:
-        cidr: 10.11.0.0/16
+  - from: # nereden 
+    - ipBlock: # kullanabilecegimiz 3 tane tanim var / ipBlock, namespaceSelector, podSelector
+        cidr: 10.11.0.0/16 # bu ip adresi uzerinden 80 portu ile gelinirse izin ver 
         except:
-        - 10.11.1.0/24
-    - namespaceSelector:
+        - 10.11.1.0/24 # izin verme diye belirleyebilecegimiz ip 
+    - namespaceSelector: # labeller uzerinden tanimlar yapabiliriz. 
         matchLabels:
-          team: b
+          team: b # team b isimli labele sahip namespacedeki butun podlar 80 portu uzerinden erisebilsin
     - podSelector:
         matchLabels:
-          app: frontend
+          app: frontend # specific pod secebiliriz
     ports:
     - protocol: TCP
       port: 80
+      # endport: 100 olarak secersek 80 den 100 e kadar demektir    
   egress:
   - to:
     - ipBlock:
-        cidr: 1.1.1.1/32
+        cidr: 1.1.1.1/32 # podlarin disa gonderdikleri trafik 
     ports:
     - protocol: TCP
       port: 80
+
+# yukarida belirlenen kurallar izin ver anlamina gelmektedir. Aksi durum yani izin verilenler haricinde trafige erisim tamamen kapali oldugu anlamina gelmektedir.
+

@@ -2,6 +2,29 @@
 
 ## Minikube
 
+Cluster altinda her podun kendisine ait bir unic id si olmasi gerekiyor
+
+Butun podlar birbirleri arasinda NAT olamadan haberlesebiliyorlar
+
+Butun podlar birbirleri arasinda varsayilan olarak haberlesebiliyorlar
+
+Podlar icerisinde bulunduklari worker nodun erisebildigi her yere de erisebilmektedirler
+
+Yani bizim kubernetes altina koydugumuz butun podlar birbirleri ile anlasabiliyorlar. Biz bunlari namespace olarak ayirsak da haberlesebilirler. Fiziksel sunucu dahi olsalar
+(worker1- worker2) haberlesemeye devam edebilirler. IP olarak podlar birbirleri ile LAYER 3-4 da konusabilirler
+
+Ayrica eger dis dunya ile trafigi acarsak da ingress, nodeport, loadbalancer ile haberlesebilecekler
+
+==>> Kisitlama olmadigi icin de bazen sorunlar yasanabilmektedir. Network olarak haberlesen podlari kisitlamak isteyebiliriz. (Frontend podu sadece Backend podu ile gorussun gibi)
+
+Network policy bir kubernetes objesi ve bu sikintiyi kaldirma imkani vermektedir.
+
+ORNEK ==> x podu sadece y namespacesinden erisilebilinsin / sadece 123 ip araligindan erisilebilinsin / xyz label erisebilsin gibi
+
+ 
+
+
+
 * Minikube'u calico plug-in'iyle başlat
 
 ```

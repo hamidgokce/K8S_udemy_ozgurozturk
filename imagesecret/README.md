@@ -6,6 +6,8 @@ Authetication gerektiren bir Docker registry'den image çekebilmek için oluştu
 ```
 $ kubectl create secret docker-registry "secret_ismi" --docker-server="registry_url" --docker-username="kullanıcı_adı" --docker-password="şifre"
 
+
+
 Ör: kubectl create secret docker-registry regscrt --docker-server=ozgurozturkregistry.azurecr.io --docker-username=ozgurozturkregistry --docker-password=wqRjEDdVhrM9Hj4D=gWwvV3YXyq9Y4ID
 ```
 ***
