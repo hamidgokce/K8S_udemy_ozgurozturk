@@ -122,3 +122,7 @@ spec:
         port: 80
       initialDelaySeconds: 20
       periodSeconds: 3
+
+# 3 tane namespace olusturuyoruz
+# Bu namespacelerin altinda 4 tane pod olusturuyoruz
+

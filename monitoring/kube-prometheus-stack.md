@@ -16,6 +16,11 @@ $ kubectl create namespace monitoring
 $ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 $ helm repo update
 $ helm install kubeprostack --namespace monitoring prometheus-community/kube-prometheus-stack
+$ kubectl get pods -n monitoring
+
+<!-- alertmanager / prometheus / grafana / metricserver / node exporter / operator  -->
+
+$ kubectl get svc -n monitoring 
 ```
 
 * Prometheus'u kontrol et
