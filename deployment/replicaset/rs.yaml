@@ -24,3 +24,5 @@ spec:
 # kubectl rollout undo deployment firstdeployment  ==> eski replicaset ayarlarina gecmektedir.
 # kubectl apply -f rs.yaml
 # kubectl delete rs firstrs
+
+
