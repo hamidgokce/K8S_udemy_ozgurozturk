@@ -11,7 +11,7 @@ spec:
     resources:
       requests: # kubernetes podu olusturmaya basladigi zaman scheduler node sececek.  
         memory: "64M" # 64 m
-        cpu: "250m" # ve ceyrek cpu uzerinde schdule et demekteyiz. bu pod olusturulabilmesi icin minimum kaynak. eger istenilen deger yoksa pod olusturulamayacak
+        cpu: "250m" # ve ceyrek cpu uzerinde schedule et demekteyiz. bu pod olusturulabilmesi icin minimum kaynak. eger istenilen deger yoksa pod olusturulamayacak
       limits:
         memory: "256M" # en fazla kullanilabilecek kaynak fakat limit asimi gecince calisma eylemi devam eder. OOMKilled durumuna gecerek pod restart edilecek. 
         # uygulama davranisana gore belirlememiz gerekmektedir.
@@ -19,3 +19,17 @@ spec:
 
 # kubectl apply -f requestlimit.yaml
 # kubectl describe pod requestlimit
+
+# https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/
+
+# apiVersion: v1
+# kind: LimitRange
+# metadata:
+#   name: mem-limit-range
+# spec:
+#   limits:
+#   - default:
+#       memory: 512Mi
+#     defaultRequest:
+#       memory: 256Mi
+#     type: Container

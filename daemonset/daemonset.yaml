@@ -47,7 +47,7 @@ spec:
 # Olusan loglari merkezi sunucaya gondermek istiyoruz
 # DaemonSet deployment objesine benzer
 # DaemonSet objesi olusturulunca sistemdeki tum nodelar uzerinde template tanimina gore pod olusturur. 
-# Varsayilan olarak her nodun uzerinde bir pod olusturulur. sadece belirli tiplerdeki nodelar uzerinde de calismasini saglayabiliriz.
+# Varsayilan olarak her nodun uzerinde bir pod olusturulur. Sadece belirli tiplerdeki nodelar uzerinde de calismasini saglayabiliriz.
 # Log toplama uygulamalari, storage provision uygulamalari kolay sekilde deploy etmeye yarar.
 # Her yeni node icinde pod olusturmasini otomatize eder
 
