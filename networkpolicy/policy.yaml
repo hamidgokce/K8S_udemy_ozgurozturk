@@ -4,7 +4,7 @@ metadata:
   name: networkpolicy-example
   namespace: ns-a # Hangi namespace de deploy etmek istedigimiz 
 spec:
-  podSelector: # ilk once nir network policy olusturulur daha sonra bu network policy in hangi podlar uzerinde etkili olacagini pod selector ile seceriz
+  podSelector: # ilk once bir network policy olusturulur daha sonra bu network policy in hangi podlar uzerinde etkili olacagini pod selector ile seceriz
     matchLabels:
       team: a # network policy i ns-a namespacesinde bulunan team=a labeline sahip butun podlara atamak istiyorum
   policyTypes:
