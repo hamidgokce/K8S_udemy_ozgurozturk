@@ -18,7 +18,7 @@ spec:
       - name: nginx
         image: nginx:latest
         ports:
-        - containerPort: 80
+        - containerPort: 80 
 
 # kubectl create deployment firstdeployment --image=nginx:latest --replicas=2
 # kubectl get deployment 
