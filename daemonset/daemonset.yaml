@@ -59,4 +59,4 @@ spec:
   # sistemde iki tane node var ve bu nodelarin uzerinde pod olusturulmali bu sebeple 2 ye cikti
 
 # kubectl get pods 
-  # iki pod mevcut / bir podu silersek tekrar olusturulacak
+  # iki pod mevcut / bir podu silersek tekrar olusturulacak 
