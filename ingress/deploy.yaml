@@ -126,7 +126,7 @@ spec:
 
 # mavi, yesil, todo adli 3 uygulama deploy edecegiz
 # 3 uygulamayi da cluster ip tipi service ile expose ediyoruz / dis dunyadan erisilebilir
-# kubectl apply -f deploy.yaml
+# kubectl apply -f deploy.yaml  
 # kubectl get deployments
 # kubectl get svc
 # bu serviceler sadece cluster icerisinden erisilebilmektedir. (cluster ip cinsinden)
